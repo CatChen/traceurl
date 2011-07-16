@@ -5,8 +5,6 @@ const url = require('url');
 const Async = require('jshelpers').Async;
 const Overload = require('jshelpers').Overload;
 
-var testUrl = 'http://cl.ly/8Led';
-
 var urlToOptions = function(shortenedUrl) {
     var parsedUrl = url.parse(shortenedUrl);
     var protocol = parsedUrl.protocol.match(/^(.*):$/)[1];
