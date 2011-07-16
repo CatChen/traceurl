@@ -44,7 +44,7 @@ var asyncGet = function(shortenedUrl) {
         
         var request = protocol.get(options, function(response) {
             if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-                var newUrl = response.headers.location;
+                var newUrl = url.resolve(shortenedUrl, response.headers.location);
                 asyncGetLoop(newUrl);
             } else {
                 operation.yield(shortenedUrl)
