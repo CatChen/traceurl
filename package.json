@@ -1,0 +1,20 @@
+{
+    "name": "trace-url",
+    "description": "A set of scripts to read information from Twitter",
+    "homepage": "https://github.com/CatChen/trace-url",
+    "version": "0.1.0",
+    "author": {
+        "name": "Cat Chen",
+        "email": "catchen@catchen.me",
+        "web": "http://catchen.me"
+    },
+    "dependencies": {
+        "jshelpers": ">=1.0.2"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:CatChen/trace-url.git"
+        }
+    ]
+}
