@@ -18,6 +18,13 @@ var urlToOptions = function(shortenedUrl) {
     };
 };
 
+var isSameOptions = function(options1, options2) {
+    return options1.protocol === options2.protocol
+        && options1.host === options2.host
+        && options1.port === options2.port
+        && options1.path === options2.path
+}
+
 var asyncGet = function(shortenedUrl) {
     var operation = new Async.Operation();
     var optionsList = [];
@@ -28,7 +35,10 @@ var asyncGet = function(shortenedUrl) {
         var protocol = options.protocol == 'http' ? http : https;
         
         for (var i = 0, l = optionsList.length; i < l; i++) {
-            
+            if (isSameOptions(optionsList[i], options)) {
+                /* infinite loop in redirection */
+                operation.yield();
+            }
         }
         optionsList.push(options);
         
@@ -40,6 +50,11 @@ var asyncGet = function(shortenedUrl) {
                 operation.yield(shortenedUrl)
             }
         });
+        
+        request.on('error', function(error) {
+            /* error during request or response */
+            operation.yield();
+        });
     };
     asyncGetLoop(shortenedUrl);
     
@@ -49,7 +64,7 @@ var asyncGet = function(shortenedUrl) {
 var main = function(shortenedUrl) {
     return asyncGet(shortenedUrl)
         .addCallback(function(result) { console.log('resolved: ' + result); });
-});
+};
 
 if (process.argv.length > 1 && process.argv[1].match(/trace.js$/ig)) {
     main.apply(this, process.argv.slice(2));
