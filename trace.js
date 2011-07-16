@@ -7,9 +7,9 @@ const Async = require('jshelpers').Async;
 var urlToOptions = function(shortenedUrl) {
     var parsedUrl = url.parse(shortenedUrl);
     var protocol = parsedUrl.protocol.match(/^(.*):$/)[1];
-    var host = parsedUrl.hostname
+    var host = (parsedUrl.auth ? parsedUrl.auth : '') + parsedUrl.hostname;
     var port = parsedUrl.port || (protocol == 'http' ? 80 : protocol == 'https' ? 443 : NaN);
-    var path = parsedUrl.pathname
+    var path = parsedUrl.pathname + (parsedUrl.search ? parsedUrl.search : '');
     return {
         protocol: protocol,
         host: host,
