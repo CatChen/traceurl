@@ -3,7 +3,6 @@ const https = require('https');
 const url = require('url');
 
 const Async = require('jshelpers').Async;
-const Overload = require('jshelpers').Overload;
 
 var urlToOptions = function(shortenedUrl) {
     var parsedUrl = url.parse(shortenedUrl);
@@ -47,11 +46,10 @@ var asyncGet = function(shortenedUrl) {
     return operation;
 };
 
-var main = Overload
-    .add([String], function(shortenedUrl) {
-        return asyncGet(shortenedUrl)
-            .addCallback(function(result) { console.log('resolved: ' + result); });
-    });
+var main = function(shortenedUrl) {
+    return asyncGet(shortenedUrl)
+        .addCallback(function(result) { console.log('resolved: ' + result); });
+});
 
 if (process.argv.length > 1 && process.argv[1].match(/trace.js$/ig)) {
     main.apply(this, process.argv.slice(2));
