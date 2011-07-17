@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
-const trace = require('./trace');
+const trace = require('traceurl');
 
 const viewsDirectory = path.join(__dirname, 'views');
 
