@@ -22,20 +22,18 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.errorHandler({ showStack: true, dumpExceptions: true }));
 
+app.set("view engine", "mustache");
+app.set("views", __dirname + '/views/');
+app.register(".mustache", require('stache'));
+
 app.get('/', function(request, response) {
-    var indexContent = getViewFile('index');
-    response.setHeader("Content-Type", "text/html");
-    response.send(indexContent);
+    response.render('index');
 });
 
 app.get('/resolve', function(request, response) {
-    response.setHeader("Content-Type", "text/html");
     trace(request.query.url)
         .addCallback(function(result) {
-            var resolveContent = getViewFile('resolve');
-            var options = { url: result };
-            resolveContent = resolveContent.replace(/{{(.*?)}}/g, function(whole, match) { return options[match] ? options[match] : ''; });
-            response.send(resolveContent);
+            response.render('resolve', { url: result });
         });
 });
 

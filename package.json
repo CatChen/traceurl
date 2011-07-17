@@ -10,7 +10,8 @@
     },
     "dependencies": {
         "traceurl": ">=0.2.5",
-        "express": ">=2.2.0"
+        "express": ">=2.2.0",
+        "stache": ">=0.1.0"
     },
     "repositories": [
         {
