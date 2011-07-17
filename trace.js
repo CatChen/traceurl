@@ -66,7 +66,7 @@ var main = function(shortenedUrl) {
         .addCallback(function(result) { console.log('resolved: ' + result); });
 };
 
-if (process.argv.length > 1 && process.argv[1].match(/trace.js$/ig)) {
+if (require.main === module) {
     main.apply(this, process.argv.slice(2));
 }
 
