@@ -1,0 +1,21 @@
+{
+    "name": "traceurl-web",
+    "description": "A JavaScript utility to trace the original url of a shortened url.",
+    "homepage": "https://github.com/CatChen/traceurl",
+    "version": "0.2.5",
+    "author": {
+        "name": "Cat Chen",
+        "email": "catchen@catchen.me",
+        "web": "http://catchen.me"
+    },
+    "dependencies": {
+        "traceurl": ">=0.2.5",
+        "express": ">=2.2.0"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:CatChen/traceurl.git"
+        }
+    ]
+}
