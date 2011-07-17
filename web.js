@@ -23,17 +23,38 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.errorHandler({ showStack: true, dumpExceptions: true }));
 
 app.set("view engine", "mustache");
-app.set("views", __dirname + '/views/');
+app.set("views", path.join(__dirname, 'views'));
 app.register(".mustache", require('stache'));
 
 app.get('/', function(request, response) {
     response.render('index');
 });
 
-app.get('/resolve', function(request, response) {
+app.get('/resolve.:format?', function(request, response) {
+    console.log('format = ' + request.params.format);
     trace(request.query.url)
         .addCallback(function(result) {
-            response.render('resolve', { url: result });
+            var json = { url: result || '' };
+            switch (request.params.format) {
+                case 'json':
+                    response.contentType('application/json');
+                    response.render('resolve.json.mustache', { json: JSON.stringify(json) });
+                    break;
+                case 'xml':
+                    response.contentType('application/xml');
+                    response.render('resolve.xml.mustache', json);
+                    break;
+                case undefined:
+                    if (!request.header('X-Requested-With')) {
+                        response.render('resolve', json);
+                    } else {
+                    }
+                    break;
+                default:
+                    /* TODO: unsupported format */
+                    response.send('');
+                    break;
+            }
         });
 });
 
