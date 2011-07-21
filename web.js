@@ -31,7 +31,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/resolve.:format?', function(request, response) {
-    console.log('format = ' + request.params.format);
+    console.log('format = ' + (request.params.format || 'html'));
     trace(request.query.url)
         .addCallback(function(result) {
             var json = { url: result || '' };
@@ -44,6 +44,7 @@ app.get('/resolve.:format?', function(request, response) {
                     response.contentType('application/xml');
                     response.render('resolve.xml.mustache', json);
                     break;
+                case 'html':
                 case undefined:
                     if (!request.header('X-Requested-With')) {
                         response.render('resolve', json);
@@ -51,8 +52,7 @@ app.get('/resolve.:format?', function(request, response) {
                     }
                     break;
                 default:
-                    /* TODO: unsupported format */
-                    response.send('');
+                    response.send(404);
                     break;
             }
         });
