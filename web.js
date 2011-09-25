@@ -6,14 +6,6 @@ const trace = require('traceurl');
 
 const viewsDirectory = path.join(__dirname, 'views');
 
-var getViewFileName = function(viewName) {
-    return path.join(viewsDirectory, viewName + '.mustache');
-};
-
-var getViewFile = function(viewName) {
-    return fs.readFileSync(getViewFileName(viewName)).toString();
-};
-
 var app = express.createServer();
 
 app.use(express.logger());
