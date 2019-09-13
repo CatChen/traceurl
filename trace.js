@@ -25,7 +25,7 @@ var isSameOptions = function(options1, options2) {
         && options1.path === options2.path
 }
 
-var asyncGet = function(shortenedUrl) {
+var asyncGet = function(shortenedUrl, recursion) {
     var operation = new Async.Operation();
     var optionsList = [];
 
@@ -45,7 +45,11 @@ var asyncGet = function(shortenedUrl) {
         var request = protocol.get(shortenedUrl, function(response) {
             if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
                 var newUrl = url.resolve(shortenedUrl, response.headers.location);
-                asyncGetLoop(newUrl);
+                if (recursion) {
+                  asyncGetLoop(newUrl);
+                } else {
+                  operation.yield(newUrl);
+                }
             } else {
                 operation.yield(shortenedUrl)
             }
@@ -61,8 +65,8 @@ var asyncGet = function(shortenedUrl) {
     return operation;
 };
 
-var main = function(shortenedUrl) {
-    return asyncGet(shortenedUrl)
+var main = function(shortenedUrl, recursion = true) {
+    return asyncGet(shortenedUrl, recursion)
         .addCallback(function(result) { console.log('resolved: ' + result); });
 };
 
