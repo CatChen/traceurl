@@ -28,12 +28,12 @@ var isSameOptions = function(options1, options2) {
 var asyncGet = function(shortenedUrl) {
     var operation = new Async.Operation();
     var optionsList = [];
-    
+
     var asyncGetLoop = function(shortenedUrl) {
         console.log('resolving: ' + shortenedUrl);
         var options = urlToOptions(shortenedUrl);
         var protocol = options.protocol == 'http' ? http : https;
-        
+
         for (var i = 0, l = optionsList.length; i < l; i++) {
             if (isSameOptions(optionsList[i], options)) {
                 /* infinite loop in redirection */
@@ -41,8 +41,8 @@ var asyncGet = function(shortenedUrl) {
             }
         }
         optionsList.push(options);
-        
-        var request = protocol.get(options, function(response) {
+
+        var request = protocol.get(shortenedUrl, function(response) {
             if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
                 var newUrl = url.resolve(shortenedUrl, response.headers.location);
                 asyncGetLoop(newUrl);
@@ -50,14 +50,14 @@ var asyncGet = function(shortenedUrl) {
                 operation.yield(shortenedUrl)
             }
         });
-        
+
         request.on('error', function(error) {
             /* error during request or response */
             operation.yield();
         });
     };
     asyncGetLoop(shortenedUrl);
-    
+
     return operation;
 };
 
