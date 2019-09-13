@@ -5,8 +5,19 @@
 	<title>resolved url</title>
 </head>
 <body>
+	{{#url}}
 	<div id="resolved-url">
 	   <a href="{{url}}">{{url}}</a>
 	</div>
+	{{/url}}
+	{{^url}}
+	<ul id="resolved-hops">
+		{{#urls}}
+		<li>
+			<a href="{{.}}">{{.}}</a>
+		</li>
+		{{/urls}}
+	</ul>
+	{{/url}}
 </body>
 </html>

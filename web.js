@@ -23,30 +23,57 @@ app.get('/', function(request, response) {
 
 app.get('/resolve.:format?', function(request, response) {
     console.log('format = ' + (request.params.format || 'html'));
-    trace(request.query.url)
-        .addCallback(function(result) {
-            var json = { url: result || '' };
-            switch (request.params.format) {
-                case 'json':
-                    response.contentType('application/json');
-                    response.render('resolve.json.mustache', { json: JSON.stringify(json) });
-                    break;
-                case 'xml':
-                    response.contentType('application/xml');
-                    response.render('resolve.xml.mustache', json);
-                    break;
-                case 'html':
-                case undefined:
-                    if (!request.header('X-Requested-With')) {
-                        response.render('resolve', json);
-                    } else {
-                    }
-                    break;
-                default:
-                    response.send(404);
-                    break;
-            }
-        });
+    if (request.query.hops === 'true') {
+        trace.traceHops(request.query.url)
+            .addCallback(function(results) {
+                var json = { urls: results };
+                switch (request.params.format) {
+                    case 'json':
+                        response.contentType('application/json');
+                        response.render('resolve.json.mustache', { json: JSON.stringify(json) });
+                        break;
+                    case 'xml':
+                        response.contentType('application/xml');
+                        response.render('resolve.xml.mustache', json);
+                        break;
+                    case 'html':
+                    case undefined:
+                        if (!request.header('X-Requested-With')) {
+                            response.render('resolve', json);
+                        } else {
+                        }
+                        break;
+                    default:
+                        response.send(404);
+                        break;
+                }
+            });
+    } else {
+        trace(request.query.url)
+            .addCallback(function(result) {
+                var json = { url: result || '' };
+                switch (request.params.format) {
+                    case 'json':
+                        response.contentType('application/json');
+                        response.render('resolve.json.mustache', { json: JSON.stringify(json) });
+                        break;
+                    case 'xml':
+                        response.contentType('application/xml');
+                        response.render('resolve.xml.mustache', json);
+                        break;
+                    case 'html':
+                    case undefined:
+                        if (!request.header('X-Requested-With')) {
+                            response.render('resolve', json);
+                        } else {
+                        }
+                        break;
+                    default:
+                        response.send(404);
+                        break;
+                }
+            });
+    }
 });
 
 var port = process.env.PORT || 3000;
