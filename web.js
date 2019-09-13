@@ -1,22 +1,21 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
 
 const trace = require('traceurl');
 
 const viewsDirectory = path.join(__dirname, 'views');
 
-var app = express.createServer();
+var app = express();
 
-app.use(express.logger());
-app.use(express.bodyParser());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.errorHandler({ showStack: true, dumpExceptions: true }));
+app.use(require('morgan')('combined'));
+app.use(require('body-parser').json());
+app.use(require('body-parser').urlencoded({ extended: false }));
+app.use(require('serve-static')(path.join(__dirname, 'public')));
+app.use(require('errorhandler')());
 
+app.engine("mustache", require('mustache-express')());
 app.set("view engine", "mustache");
 app.set("views", path.join(__dirname, 'views'));
-app.register(".mustache", require('stache'));
 
 app.get('/', function(request, response) {
     response.render('index');

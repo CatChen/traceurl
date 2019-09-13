@@ -1,22 +1,26 @@
 {
-    "name": "traceurl-web",
-    "description": "A JavaScript utility to trace the original url of a shortened url.",
-    "homepage": "https://github.com/CatChen/traceurl",
-    "version": "0.2.7-web",
-    "author": {
-        "name": "Cat Chen",
-        "email": "catchen@catchen.me",
-        "web": "http://catchen.me"
-    },
-    "dependencies": {
-        "traceurl": ">=0.2.7",
-        "express": ">=2.2.0",
-        "stache": ">=0.1.0"
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "git@github.com:CatChen/traceurl.git"
-        }
-    ]
+  "name": "traceurl-web",
+  "description": "A JavaScript utility to trace the original url of a shortened url.",
+  "homepage": "https://github.com/CatChen/traceurl",
+  "version": "0.2.7-web",
+  "author": {
+    "name": "Cat Chen",
+    "email": "catchen@catchen.me",
+    "web": "https://catchen.me"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "errorhandler": "^1.5.1",
+    "express": ">=2.2.0",
+    "morgan": "^1.9.1",
+    "mustache-express": "^1.2.8",
+    "serve-static": "^1.14.1",
+    "traceurl": ">=0.2.7"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@github.com:CatChen/traceurl.git"
+    }
+  ]
 }
