@@ -97,6 +97,34 @@ main.traceHops = function(shortenedUrl, recursion = true) {
     return asyncGet(shortenedUrl, recursion);
 };
 
+main.promisified = {
+  trace: function(shortenedUrl, recursion = true) {
+    return new Promise((resolve, reject) => {
+      main.trace(shortenedUrl, recursion)
+        .addCallback((result) => {
+          if (result) {
+            resolve(result);
+          } else {
+            reject(new Error('Failed to trace'));
+          }
+        });
+    })
+  },
+
+  traceHops: function(shortenedUrl, recursion = true) {
+    return new Promise((resolve, reject) => {
+      main.traceHops(shortenedUrl, recursion)
+        .addCallback((results) => {
+          if (results.length > 0) {
+            resolve(results);
+          } else {
+            reject(new Error('Failed to trace'));
+          }
+        });
+    })
+  },
+}
+
 if (require.main === module) {
     main.apply(this, process.argv.slice(2));
 }
