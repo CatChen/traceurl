@@ -67,7 +67,20 @@ var asyncGet = function(shortenedUrl, recursion) {
     return operation;
 };
 
-var main = function(shortenedUrl, recursion = true) {
+var main = function(shortenedUrl) {
+    return Async.chain()
+        .next(function() {
+          return asyncGet(shortenedUrl, true)
+        })
+        .next(function(results) {
+            var finalResult = results[results.length - 1];
+            console.log('resolved: ' + finalResult);
+            return finalResult;
+        })
+        .go();
+};
+
+main.trace = function(shortenedUrl, recursion = true) {
     return Async.chain()
         .next(function() {
           return asyncGet(shortenedUrl, recursion)
