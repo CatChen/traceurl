@@ -94,7 +94,11 @@ main.trace = function(shortenedUrl, recursion = true) {
 };
 
 main.traceHops = function(shortenedUrl, recursion = true) {
-    return asyncGet(shortenedUrl, recursion);
+    return asyncGet(shortenedUrl, recursion)
+        .addCallback(function(results) {
+            var finalResult = results[results.length - 1];
+            console.log('resolved: ' + finalResult);
+        });
 };
 
 main.promisified = {
