@@ -28,6 +28,7 @@ var isSameOptions = function(options1, options2) {
 var asyncGet = function(shortenedUrl, recursion) {
     var operation = new Async.Operation();
     var optionsList = [];
+    var results = [];
 
     var asyncGetLoop = function(shortenedUrl) {
         console.log('resolving: ' + shortenedUrl);
@@ -45,13 +46,14 @@ var asyncGet = function(shortenedUrl, recursion) {
         var request = protocol.get(shortenedUrl, function(response) {
             if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
                 var newUrl = url.resolve(shortenedUrl, response.headers.location);
+                results.push(newUrl);
                 if (recursion) {
                   asyncGetLoop(newUrl);
                 } else {
-                  operation.yield(newUrl);
+                  operation.yield(results);
                 }
             } else {
-                operation.yield(shortenedUrl)
+                operation.yield(results)
             }
         });
 
@@ -66,8 +68,20 @@ var asyncGet = function(shortenedUrl, recursion) {
 };
 
 var main = function(shortenedUrl, recursion = true) {
-    return asyncGet(shortenedUrl, recursion)
-        .addCallback(function(result) { console.log('resolved: ' + result); });
+    return Async.chain()
+        .next(function() {
+          return asyncGet(shortenedUrl, recursion)
+        })
+        .next(function(results) {
+            var finalResult = results[results.length - 1];
+            console.log('resolved: ' + finalResult);
+            return finalResult;
+        })
+        .go();
+};
+
+main.traceHops = function(shortenedUrl, recursion = true) {
+    return asyncGet(shortenedUrl, recursion);
 };
 
 if (require.main === module) {
