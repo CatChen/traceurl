@@ -31,6 +31,7 @@ var asyncGet = function(shortenedUrl, recursion) {
     var results = [];
 
     var asyncGetLoop = function(shortenedUrl) {
+        results.push(shortenedUrl);
         console.log('resolving: ' + shortenedUrl);
         var options = urlToOptions(shortenedUrl);
         var protocol = options.protocol == 'http' ? http : https;
@@ -46,7 +47,6 @@ var asyncGet = function(shortenedUrl, recursion) {
         var request = protocol.get(shortenedUrl, function(response) {
             if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
                 var newUrl = url.resolve(shortenedUrl, response.headers.location);
-                results.push(newUrl);
                 if (recursion) {
                   asyncGetLoop(newUrl);
                 } else {
