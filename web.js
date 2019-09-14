@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 
-const trace = require('traceurl');
+const traceurl = require('@catchen/traceurl');
 
 const viewsDirectory = path.join(__dirname, 'views');
 
@@ -24,7 +24,7 @@ app.get('/', function(request, response) {
 app.get('/resolve.:format?', function(request, response) {
     console.log('format = ' + (request.params.format || 'html'));
     if (request.query.hops === 'true') {
-        trace.traceHops(request.query.url)
+        traceurl.traceHops(request.query.url)
             .addCallback(function(results) {
                 var json = { urls: results };
                 switch (request.params.format) {
@@ -49,7 +49,7 @@ app.get('/resolve.:format?', function(request, response) {
                 }
             });
     } else {
-        trace(request.query.url)
+        traceurl.trace(request.query.url)
             .addCallback(function(result) {
                 var json = { url: result || '' };
                 switch (request.params.format) {
