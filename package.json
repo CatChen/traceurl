@@ -10,8 +10,16 @@
     "email": "catchen@catchen.me",
     "web": "http://catchen.me"
   },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "always"
+  },
   "dependencies": {
     "jshelpers": ">=1.0.2"
+  },
+  "devDependencies": {
+    "prettier": "^1.18.2"
   },
   "repository": {
     "type": "git",
