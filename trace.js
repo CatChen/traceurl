@@ -67,7 +67,7 @@ var asyncGet = function(shortenedUrl, recursion) {
 
     request.on('error', function(error) {
       /* error during request or response */
-      operation.yield();
+      operation.yield(results);
     });
   };
   asyncGetLoop(shortenedUrl);
