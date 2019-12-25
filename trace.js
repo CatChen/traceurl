@@ -54,7 +54,9 @@ var asyncGet = function(shortenedUrl, recursion) {
         response.statusCode < 400 &&
         response.headers.location
       ) {
-        var newUrl = url.resolve(shortenedUrl, response.headers.location);
+        var relativeUrl = response.headers.location;
+        var absoluteUrl = new URL(relativeUrl, shortenedUrl).toString();
+        var newUrl = url.resolve(shortenedUrl, absoluteUrl);
         if (recursion) {
           asyncGetLoop(newUrl);
         } else {
