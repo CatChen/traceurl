@@ -3,7 +3,7 @@
   "description": "A JavaScript utility to trace the original url of a shortened url.",
   "license": "MIT",
   "homepage": "https://github.com/CatChen/traceurl",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "main": "./trace.js",
   "author": {
     "name": "Cat Chen",
