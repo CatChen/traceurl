@@ -50,7 +50,7 @@ var asyncGet = function(shortenedUrl, recursion) {
 
     var request = protocol.get(shortenedUrl, function(response) {
       if (
-        response.statusCode >= 300 &&
+        response.statusCode >= 200 &&
         response.statusCode < 400 &&
         response.headers.location
       ) {
